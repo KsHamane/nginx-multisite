@@ -20,7 +20,7 @@ Everything below runs inside a [Multipass](https://multipass.run) Ubuntu VM.
 Each script has exactly one job, so nothing gets hand-edited twice.
 
 | Script | What it does |
-| ----------------------
+| --- | --- |
 | `nginx-setup.sh` | Installs Nginx if missing, enables it, opens HTTP in the firewall |
 | `site1-setup.sh` | Deploys the first site (`site1-index.html`) on port 80 |
 | `new-site-code.sh` | Opens an editor for a new site's HTML, auto-numbered |

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deployment 200% Done | Nginx Test Page by KsHamane</title>
+  
+  <style>
+    /* CSS Variables matching dark neo-brutalist palette */
+    :root {
+      --ink: #0B1220;
+      --panel: #131c30;
+      --panel-dark: #090e1a;
+      --hero-red: #C81E3A;
+      --web-white: #F5F5F0;
+      --electric: #29B6F6;
+      --burst-yellow: #FFD23F;
+      --success-green: #00E676;
+      --border-width: 4px;
+      --shadow-offset: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background-color: var(--ink);
+      color: var(--web-white);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background grid and glowing radial gradients */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(200, 30, 58, 0.35), transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(41, 182, 246, 0.28), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(255, 210, 63, 0.12), transparent 60%),
+        repeating-linear-gradient(0deg, rgba(245, 245, 240, 0.03) 0px, rgba(245, 245, 240, 0.03) 1px, transparent 1px, transparent 28px),
+        repeating-linear-gradient(90deg, rgba(245, 245, 240, 0.03) 0px, rgba(245, 245, 240, 0.03) 1px, transparent 1px, transparent 28px);
+      pointer-events: none;
+    }
+
+    /* Top navigation bar */
+    .top-bar {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      color: var(--web-white);
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      fill: var(--electric);
+    }
+
+    .live-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--panel);
+      border: 2px solid var(--web-white);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.825rem;
+      font-weight: 700;
+      box-shadow: 3px 3px 0px var(--hero-red);
+    }
+
+    .pulse-dot {
+      width: 10px;
+      height: 10px;
+      background-color: var(--success-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--success-green);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    /* Main Stage Container */
+    .stage {
+      position: relative;
+      z-index: 2;
+      min-height: calc(100vh - 80px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.25rem 3rem;
+    }
+
+    .panel-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Starburst Badge */
+    .burst {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      top: -40px;
+      right: -35px;
+      background: var(--burst-yellow);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      transform: rotate(12deg);
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: burst-float 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes burst-float {
+      0% { transform: rotate(10deg) translateY(0); }
+      100% { transform: rotate(16deg) translateY(-8px); }
+    }
+
+    .burst-text {
+      color: var(--ink);
+      font-family: "Arial Black", Impact, sans-serif;
+      font-weight: 900;
+      font-size: 0.95rem;
+      line-height: 1.1;
+      transform: rotate(-8deg);
+      text-transform: uppercase;
+    }
+
+    /* Neo-Brutalist Panel */
+    .panel {
+      position: relative;
+      z-index: 2;
+      background: rgba(19, 28, 48, 0.92);
+      backdrop-filter: blur(8px);
+      border: var(--border-width) solid var(--web-white);
+      border-radius: 12px;
+      padding: 2.75rem clamp(1.25rem, 5vw, 3.25rem);
+      box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--hero-red);
+      animation: swing-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1.25) both;
+    }
+
+    @keyframes swing-in {
+      from { transform: rotate(-4deg) translateY(-25px); opacity: 0; }
+      to { transform: rotate(0deg) translateY(0); opacity: 1; }
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--burst-yellow);
+      background: rgba(255, 210, 63, 0.12);
+      border: 1.5px solid var(--burst-yellow);
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1.2rem;
+    }
+
+    h1 {
+      font-family: "Arial Black", Impact, Haettenschweiler, sans-serif;
+      font-size: clamp(2.2rem, 6.5vw, 3.6rem);
+      line-height: 0.98;
+      margin: 0 0 0.8rem;
+      color: var(--hero-red);
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      text-shadow:
+        -2px -2px 0 var(--ink),
+         2px -2px 0 var(--ink),
+        -2px  2px 0 var(--ink),
+         2px  2px 0 var(--ink),
+         5px  5px 0px rgba(0,0,0,0.5);
+    }
+
+    h1 .white-text {
+      color: var(--web-white);
+    }
+
+    .maker-tag {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--electric);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .maker-tag span.badge {
+      background: var(--electric);
+      color: var(--ink);
+      padding: 0.1rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
+    .tagline {
+      font-size: 1.05rem;
+      color: rgba(245, 245, 240, 0.92);
+      margin: 0 0 1.75rem;
+      line-height: 1.6;
+      font-weight: 400;
+      text-align: left;
+      border-left: 3px solid var(--electric);
+      padding-left: 1rem;
+    }
+
+    /* Skills Badges */
+    .skills-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(245, 245, 240, 0.6);
+      margin-bottom: 0.6rem;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .skills {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      justify-content: flex-start;
+      padding: 0;
+      margin: 0 0 2rem;
+    }
+
+    .skills li {
+      background: var(--panel-dark);
+      border: 2px solid var(--web-white);
+      border-radius: 999px;
+      padding: 0.4rem 0.95rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 2px 2px 0px var(--ink);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .skills li:hover {
+      transform: translateY(-2px);
+      background: var(--hero-red);
+      color: var(--web-white);
+    }
+
+    .skills li svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    /* CTA Button Group */
+    .cta-row {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 0.75rem 1.4rem;
+      border-radius: 8px;
+      border: 2px solid var(--web-white);
+      box-shadow: 4px 4px 0px var(--ink);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+      cursor: pointer;
+    }
+
+    .cta:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--ink);
+    }
+
+    .cta:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px var(--ink);
+    }
+
+    .cta.primary {
+      background: var(--hero-red);
+      color: var(--web-white);
+    }
+
+    .cta.secondary {
+      background: var(--electric);
+      color: var(--ink);
+    }
+
+    .cta.outline {
+      background: transparent;
+      color: var(--web-white);
+      border-color: var(--web-white);
+    }
+
+    .cta svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Interactive Terminal Block */
+    .terminal-card {
+      background: var(--panel-dark);
+      border: 2px solid var(--web-white);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 1rem;
+      box-shadow: 4px 4px 0px var(--ink);
+    }
+
+    .terminal-header {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.5rem 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot-btn {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-btn.red { background: #FF5F56; }
+    .dot-btn.yellow { background: #FFBD2E; }
+    .dot-btn.green { background: #27C93F; }
+
+    .terminal-title {
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: rgba(245, 245, 240, 0.6);
+    }
+
+    .terminal-body {
+      padding: 1rem;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.825rem;
+      color: #A9DC76;
+      line-height: 1.5;
+      text-align: left;
+      overflow-x: auto;
+    }
+
+    .terminal-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .prompt {
+      color: var(--electric);
+      user-select: none;
+    }
+
+    .command {
+      color: var(--web-white);
+      font-weight: 700;
+    }
+
+    .response-header {
+      color: #FFD23F;
+    }
+
+    /* Footnote */
+    .footnote {
+      font-size: 0.85rem;
+      color: rgba(245, 245, 240, 0.75);
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px dashed rgba(245, 245, 240, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .server-host {
+      font-family: monospace;
+      background: var(--panel-dark);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      color: var(--electric);
+      border: 1px solid rgba(41, 182, 246, 0.3);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--burst-yellow);
+      color: var(--ink);
+      font-weight: 800;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      border: 2px solid var(--ink);
+      box-shadow: 4px 4px 0px var(--ink);
+      z-index: 100;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 640px) {
+      .burst {
+        width: 120px;
+        height: 120px;
+        top: -30px;
+        right: -15px;
+      }
+      .burst-text {
+        font-size: 0.75rem;
+      }
+      .panel {
+        padding: 2rem 1.25rem;
+        box-shadow: 6px 6px 0px var(--hero-red);
+      }
+      .cta-row {
+        flex-direction: column;
+      }
+      .cta {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-bar">
+    <a href="#" class="brand">
+      <svg class="brand-icon" viewBox="0 0 24 24">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      KsHamane / DevOps
+    </a>
+    <div class="live-status">
+      <span class="pulse-dot"></span>
+      <span>NGINX ACTIVE</span>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div class="panel-wrapper">
+      
+      <!-- Starburst Badge -->
+      <div class="burst" aria-hidden="true">
+        <span class="burst-text">DEPLOYED<br>200% OK!</span>
+      </div>
+
+      <!-- Main Brutalist Panel -->
+      <section class="panel">
+        
+        <!-- Eyebrow status -->
+        <div class="eyebrow">HTTP 200 OK — NGINX ONLINE</div>
+
+        <!-- Big Main Heading -->
+        <h1>YOUR SITE IS <br><span class="white-text">RUNNING!</span></h1>
+
+        <!-- Maker Attribution -->
+        <div class="maker-tag">
+          Built & Configured by <strong>Karim Salah Hamane</strong> <span class="badge">KsHamane</span>
+        </div>
+
+        <!-- Project Description Paragraph -->
+        <p class="tagline">
+          This page confirms that your Nginx web server is up and running smoothly! This is my first hands-on web server project as part of my DevOps learning journey, demonstrating web server configuration, domain mapping, and Linux system administration.
+        </p>
+
+        <!-- Tech Skills Pills -->
+        <div class="skills-title">Technologies & Tools Utilized:</div>
+        <ul class="skills">
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-10 10c0 5.52 4.48 10 10 10s10-4.48 10-10A10 10 0 0012 2zm1 14.5h-2v-2h2v2zm0-4h-2v-6h2v6z"/></svg>
+            Linux
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.8L18.6 8 12 11.2 5.4 8 12 4.8zM4 9.6l7 3.5v6.5l-7-3.5V9.6zm16 6.5l-7 3.5v-6.5l7-3.5v6.5z"/></svg>
+            Nginx
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M4 17l6-5-6-5v10zm8 0h8v-2h-8v2z"/></svg>
+            Bash
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8s0 0 0 0z"/></svg>
+            SSH
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            UFW
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            Git
+          </li>
+        </ul>
+
+        <!-- Action Links & Copy Command Button -->
+        <div class="cta-row">
+          <a class="cta secondary" href="https://github.com/KsHamane" target="_blank" rel="noopener noreferrer" id="github-link">
+            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            View GitHub
+          </a>
+          <a class="cta primary" href="https://www.linkedin.com/in/karim-salah-hamane" target="_blank" rel="noopener noreferrer" id="linkedin-link">
+            <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.78a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"/></svg>
+            Connect on LinkedIn
+          </a>
+          <button class="cta outline" onclick="copyCurlCommand()">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+            Copy CURL Test
+          </button>
+        </div>
+
+        <!-- Interactive Terminal Inspection Box -->
+        <div class="terminal-card">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <div class="dot-btn red"></div>
+              <div class="dot-btn yellow"></div>
+              <div class="dot-btn green"></div>
+            </div>
+            <div class="terminal-title">bash — nginx-server-inspect</div>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <span class="prompt">kshamane@devops-node:~$</span>
+              <span class="command">curl -I http://localhost</span>
+            </div>
+            <div class="terminal-line">
+              <span class="response-header">HTTP/1.1 200 OK</span>
+            </div>
+            <div class="terminal-line">
+              <span>Server: nginx/1.24.0 (Ubuntu)</span>
+            </div>
+            <div class="terminal-line">
+              <span>Content-Type: text/html; charset=UTF-8</span>
+            </div>
+            <div class="terminal-line">
+              <span>X-Served-By: KsHamane-DevOps-Pipeline</span>
+            </div>
+            <div class="terminal-line" style="margin-top: 0.5rem;">
+              <span class="prompt">kshamane@devops-node:~$</span>
+              <span style="color: #29B6F6;"># Ready for traffic! 🚀</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Hostname Footnote -->
+        <div class="footnote">
+          <span id="server-location">Served live via Nginx</span>
+          <span id="timestamp-badge" style="font-family: monospace; opacity: 0.7;">UTC 200% OK</span>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- Toast Box for Clipboard feedback -->
+  <div class="toast" id="toast">Command copied to clipboard!</div>
+
+  <script>
+    /* JavaScript for dynamic runtime host detection & user feedback */
+    document.addEventListener('DOMContentLoaded', function() {
+      // Determine real host or domain
+      const host = window.location.host || window.location.hostname || 'localhost';
+      const protocol = window.location.protocol || 'http:';
+      
+      const serverLocEl = document.getElementById('server-location');
+      if (serverLocEl) {
+        serverLocEl.innerHTML = 'Served live from <span class="server-host">' + host + '</span> via Nginx';
+      }
+
+      // Update timestamp
+      const now = new Date();
+      const timeStr = now.toISOString().split('T')[1].slice(0, 8) + ' UTC';
+      const timeEl = document.getElementById('timestamp-badge');
+      if (timeEl) {
+        timeEl.textContent = 'Last checked: ' + timeStr;
+      }
+    });
+
+    // Copy CURL command functionality
+    function copyCurlCommand() {
+      const host = window.location.host || 'localhost';
+      const commandText = 'curl -I http://' + host;
+      
+      // Fallback copy logic for iFrame compatibility
+      const dummy = document.createElement('textarea');
+      document.body.appendChild(dummy);
+      dummy.value = commandText;
+      dummy.select();
+      document.execCommand('copy');
+      document.body.removeChild(dummy);
+
+      // Show toast
+      showToast('Copied: "' + commandText + '"');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
